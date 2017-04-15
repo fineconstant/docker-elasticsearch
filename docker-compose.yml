@@ -1,6 +1,11 @@
 # Configuration based on:
 # https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html
 
+# Ports:
+# 9200: Elasticsearch HTTP
+# 9300: Elasticsearch TCP transport
+# 5601: Kibana
+
 version: '2'
 services:
   docker-elasticsearch-1:
@@ -25,8 +30,10 @@ services:
       - elasticsearch-data-1:/usr/share/elasticsearch/data
     ports:
       - 9200:9200
+      - 9300:9300
     networks:
       - elasticsearch-network
+
   docker-elasticsearch-2:
     image: docker.elastic.co/elasticsearch/elasticsearch:5.3.0
     environment:
@@ -49,6 +56,7 @@ services:
       - elasticsearch-data-2:/usr/share/elasticsearch/data
     networks:
       - elasticsearch-network
+
   docker-elasticsearch-3:
     image: docker.elastic.co/elasticsearch/elasticsearch:5.3.0
     environment:
@@ -69,6 +77,18 @@ services:
       - IPC_LOCK
     volumes:
       - elasticsearch-data-3:/usr/share/elasticsearch/data
+    networks:
+      - elasticsearch-network
+
+  docker-kibana:
+    image: docker.elastic.co/kibana/kibana:5.3.0
+    environment:
+      SERVER_NAME: docker-kibana
+      ELASTICSEARCH_URL: http://docker-elasticsearch-1:9200/
+    depends_on:
+      - docker-elasticsearch-1
+    ports:
+      - 5601:5601
     networks:
       - elasticsearch-network
 
