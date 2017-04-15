@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
 
-docker-compose up
+# create cluster and detach
+docker-compose up -d
