@@ -1,0 +1,85 @@
+# Configuration based on:
+# https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html
+
+version: '2'
+services:
+  docker-elasticsearch-1:
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.3.0
+    container_name: docker-elasticsearch-cluster
+    environment:
+      - node.name=docker-elasticsearch-1
+      - cluster.name=elasticsearch-docker-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    mem_limit: 1g
+    cap_add:
+      - IPC_LOCK
+    volumes:
+      - elasticsearch-data-1:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+    networks:
+      - elasticsearch-network
+  docker-elasticsearch-2:
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.3.0
+    environment:
+      - node.name=docker-elasticsearch-2
+      - cluster.name=elasticsearch-docker-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "discovery.zen.ping.unicast.hosts=docker-elasticsearch-1"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    mem_limit: 1g
+    cap_add:
+      - IPC_LOCK
+    volumes:
+      - elasticsearch-data-2:/usr/share/elasticsearch/data
+    networks:
+      - elasticsearch-network
+  docker-elasticsearch-3:
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.3.0
+    environment:
+      - node.name=docker-elasticsearch-3
+      - cluster.name=elasticsearch-docker-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "discovery.zen.ping.unicast.hosts=docker-elasticsearch-1"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    mem_limit: 1g
+    cap_add:
+      - IPC_LOCK
+    volumes:
+      - elasticsearch-data-3:/usr/share/elasticsearch/data
+    networks:
+      - elasticsearch-network
+
+volumes:
+  elasticsearch-data-1:
+    driver: local
+  elasticsearch-data-2:
+    driver: local
+  elasticsearch-data-3:
+    driver: local
+
+networks:
+  elasticsearch-network:
+    driver: bridge
