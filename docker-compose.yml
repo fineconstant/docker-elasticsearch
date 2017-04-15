@@ -16,7 +16,7 @@ services:
     container_name: docker-elasticsearch-1
     environment:
       - node.name=docker-elasticsearch-1
-      - cluster.name=elasticsearch-docker-cluster
+      - cluster.name=docker-elasticsearch-cluster
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     ulimits:
@@ -42,7 +42,7 @@ services:
     container_name: docker-elasticsearch-2
     environment:
       - node.name=docker-elasticsearch-2
-      - cluster.name=elasticsearch-docker-cluster
+      - cluster.name=docker-elasticsearch-cluster
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
       - "discovery.zen.ping.unicast.hosts=docker-elasticsearch-1"
@@ -66,7 +66,7 @@ services:
     container_name: docker-elasticsearch-3
     environment:
       - node.name=docker-elasticsearch-3
-      - cluster.name=elasticsearch-docker-cluster
+      - cluster.name=docker-elasticsearch-cluster
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
       - "discovery.zen.ping.unicast.hosts=docker-elasticsearch-1"
