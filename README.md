@@ -1,4 +1,4 @@
-# Docker Elasticsearch - Kibana cluster
+# Elasticsearch - Kibana Docker cluster
 
 
 * [elasticsearch-up-cluster.sh](elasticsearch-up-cluster.sh) - Creates Elasticsearch cluster using [docker-compose.yml](docker-compose.yml) file.
